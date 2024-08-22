@@ -1,10 +1,11 @@
 import torch
 from torch import Tensor
 from torch.optim.optimizer import Optimizer
-from typing import Any, Iterable, Dict, Union, TypeAlias
+from typing import Any, Iterable, Dict, Union # TypeAlias
 
-
-ParamsT: TypeAlias = Union[Iterable[torch.Tensor], Iterable[Dict[str, Any]]]
+#  NOTE: TypeAlias导入报错，可以更新typing-extensions版本  pip install typing-extensions --upgrade
+# ParamsT: TypeAlias = Union[Iterable[torch.Tensor], Iterable[Dict[str, Any]]]
+ParamsT = Union[Iterable[torch.Tensor], Iterable[Dict[str, Any]]]
 
 
 class Lion(Optimizer):

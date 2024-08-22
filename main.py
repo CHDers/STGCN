@@ -9,6 +9,7 @@ import tqdm
 import numpy as np
 import pandas as pd
 from sklearn import preprocessing
+from rich import print
 
 import torch
 import torch.nn as nn
@@ -76,7 +77,7 @@ def get_parameters():
     else:
         device = torch.device('cpu')
         gc.collect() # Clean cache
-    
+
     Ko = args.n_his - (args.Kt - 1) * 2 * args.stblock_num
 
     # blocks: settings of channel size in st_conv_blocks and output layer,
@@ -90,10 +91,10 @@ def get_parameters():
     elif Ko > 0:
         blocks.append([128, 128])
     blocks.append([1])
-    
+
     return args, device, blocks
 
-def data_preparate(args, device):    
+def data_preparate(args, device):
     adj, n_vertex = dataloader.load_adj(args.dataset)
     gso = utility.calc_gso(adj, args.gso_type)
     if args.graph_conv_type == 'cheb_graph_conv':
@@ -134,10 +135,10 @@ def data_preparate(args, device):
 
 def prepare_model(args, blocks, n_vertex):
     loss = nn.MSELoss()
-    es = earlystopping.EarlyStopping(delta=0.0, 
-                                     patience=args.patience, 
-                                     verbose=True, 
-                                     path="STCGN_" + args.dataset + ".pt")
+    es = earlystopping.EarlyStopping(delta=0.0,
+                                     patience=args.patience,
+                                     verbose=True,
+                                     path="STGCN_" + args.dataset + ".pt")
 
     if args.graph_conv_type == 'cheb_graph_conv':
         model = models.STGCNChebGraphConv(args, blocks, n_vertex).to(device)
@@ -193,7 +194,7 @@ def val(model, val_iter):
         n += y.shape[0]
     return torch.tensor(l_sum / n)
 
-@torch.no_grad() 
+@torch.no_grad()
 def test(zscore, loss, model, test_iter, args):
     model.load_state_dict(torch.load("STGCN_" + args.dataset + ".pt"))
     model.eval()

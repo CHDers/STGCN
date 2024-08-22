@@ -7,7 +7,7 @@ class STGCNChebGraphConv(nn.Module):
     # STGCNChebGraphConv contains 'TGTND TGTND TNFF' structure
     # ChebGraphConv is the graph convolution from ChebyNet.
     # Using the Chebyshev polynomials of the first kind as a graph filter.
-        
+
     # T: Gated Temporal Convolution Layer (GLU or GTU)
     # G: Graph Convolution Layer (ChebGraphConv)
     # T: Gated Temporal Convolution Layer (GLU or GTU)
@@ -49,7 +49,7 @@ class STGCNChebGraphConv(nn.Module):
             x = self.fc1(x.permute(0, 2, 3, 1))
             x = self.relu(x)
             x = self.fc2(x).permute(0, 3, 1, 2)
-        
+
         return x
 
 class STGCNGraphConv(nn.Module):
@@ -57,7 +57,7 @@ class STGCNGraphConv(nn.Module):
     # GraphConv is the graph convolution from GCN.
     # GraphConv is not the first-order ChebConv, because the renormalization trick is adopted.
     # Be careful about over-smoothing.
-        
+
     # T: Gated Temporal Convolution Layer (GLU or GTU)
     # G: Graph Convolution Layer (GraphConv)
     # T: Gated Temporal Convolution Layer (GLU or GTU)
@@ -99,5 +99,5 @@ class STGCNGraphConv(nn.Module):
             x = self.fc1(x.permute(0, 2, 3, 1))
             x = self.relu(x)
             x = self.fc2(x).permute(0, 3, 1, 2)
-        
+
         return x
